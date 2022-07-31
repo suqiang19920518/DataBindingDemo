@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/ll_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:onClick="@{onTitleBarOnClick}"
+            android:text="@{titlebar, default=默认值}"
+            android:textColor="@{resource.color}"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
+    <data>
+
+        <variable
+            name="titlebar"
+            type="java.lang.String" />
+
+        <variable
+            name="onTitleBarOnClick"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="resource"
+            type="com.example.databinding.field.ResourceBean" />
+    </data>
+</layout>

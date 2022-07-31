@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="cnt" format="integer" />
+    <attr name="position" format="integer" />
+    <attr name="spaceSize" format="dimension"/>
+    <attr name="activeRadius" format="dimension"/>
+    <attr name="activeColor" format="color"/>
+    <attr name="normalRadius" format="dimension"/>
+    <attr name="normalColor" format="color"/>
+
+    <declare-styleable name="IndicatorView">
+        <attr name="cnt"/>
+        <attr name="position"/>
+        <attr name="spaceSize"/>
+        <attr name="activeRadius"/>
+        <attr name="activeColor"/>
+        <attr name="normalRadius"/>
+        <attr name="normalColor"/>
+    </declare-styleable>
+
+</resources>

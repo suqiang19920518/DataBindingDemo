@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">DataBinding</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="weight">65kg</string>
+    <string name="tip">binding 类会生成一个命名为 context 的特殊变量</string>
+    <string name="gray">#e6e6e6</string>
+    <string name="blue">#00008b</string>
+</resources>

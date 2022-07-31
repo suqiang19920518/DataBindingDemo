@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--    它以一个 layout 标签作为根节点，里面是 data 标签与 view 标签。
+view 标签的内容就是不使用 Data Binding 时的普通布局文件内容-->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:binding="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- 布局文件中的表达式使用 “@{}” 的语法 -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <!-- 在使用应用命名空间的布局中，变量可以传递到任何include布局中-->
+                <!-- 不支持直接包含merge节点-->
+                <include
+                    android:id="@+id/title_bar_include"
+                    layout="@layout/layout_title_bar"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    binding:onTitleBarOnClick="@{main::simpleOnClick}"
+                    binding:titlebar="@{user.name}"
+                    binding:resource="@{resource}"/>
+
+                <!-- 默认值无需加引号，且只在预览视图显示-->
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:gravity="center"
+                    android:text="@{title, default = 默认值}"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/title_bar_include" />
+
+                <!-- 表达式中使用静态方法-->
+                <TextView
+                    android:id="@+id/tv_english_name"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:gravity="center"
+                    android:text="@{StringUtil.toUpperCase(user.englishName)}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+                <!-- 函数调用也可以使用 `.` , 如main.simpleOnClick , 不过已弃用 -->
+                <TextView
+                    android:id="@+id/tv_user_address"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:gravity="center"
+                    android:onClick="@{main::simpleOnClick}"
+                    android:text="@{user.address}"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_english_name" />
+
+                <TextView
+                    android:id="@+id/tv_user_height"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:gravity="center"
+                    android:onClick="simpleOnClick"
+                    android:text="@{user.height}"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:visibility="@{TextUtils.isEmpty(user.name) ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_user_address" />
+
+
+                <!-- android:text="@{user.weight?? @string/weight}"
+                等价于
+                android:text="@{user.weight !=null? user.weight : @string/weight}"-->
+                <TextView
+                    android:id="@+id/tv_user_weight"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="@{user.weight?? @string/weight}"
+                    android:visibility="@{tvUserHeight.getVisibility() == View.GONE ? View.GONE : View.VISIBLE}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_user_height" />
+                <!-- 这里TextView直接引用上一个TextView，tvUserHeight为id的驼峰命名 -->
+
+                <TextView
+                    android:id="@+id/tv_name"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:gravity="center"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:text="@={user.name}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_user_weight"/>
+
+                <TextView
+                    android:id="@+id/tv_test1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background='@{"红色"}'
+                    android:padding="20dp"
+                    android:text="红色背景蓝色字"
+                    android:textColor='@{"蓝色"}'
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_name"/>
+
+                <TextView
+                    android:id="@+id/tv_test2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background='@{"蓝色"}'
+                    android:padding="20dp"
+                    android:text="蓝色背景红色字"
+                    android:textColor='@{"红色"}'
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_test1"/>
+
+                <Button
+                    android:id="@+id/btn_submit"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:onClick="@{()-> main.submit(user.flag)}"
+                    android:textColor="@{resource.color}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_test2" />
+
+                <Button
+                    android:id="@+id/btn_to_single_list"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:text="单一Item页面"
+                    android:onClick="@{main::simpleOnClick}"
+                    android:textColor="@{resource.color}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_submit" />
+
+                <Button
+                    android:id="@+id/btn_to_varied_list"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:text="多种Item页面"
+                    android:onClick="@{main::simpleOnClick}"
+                    android:textColor="@{resource.color}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_to_single_list" />
+
+                <Button
+                    android:id="@+id/btn_to_viewpager"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:text="viewpager页面"
+                    android:onClick="@{main::simpleOnClick}"
+                    android:textColor="@{resource.color}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_to_varied_list" />
+
+                <!-- ``字符包裹的字符串，可用作拼接字符串 -->
+                <TextView
+                    android:id="@+id/tv_tips"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="@{`hello world` + @string/app_name}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_to_viewpager" />
+
+                <!-- 表达式中使用静态方法-->
+                <TextView
+                    android:id="@+id/tv_static_method"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:gravity="center"
+                    android:text="@{StringUtil.loadString(context)}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_tips"/>
+
+                <ImageView
+                    android:id="@+id/iv_test"
+                    android:layout_width="80dp"
+                    android:layout_height="50dp"
+                    app:imageUrl="@{user.url}"
+                    app:placeholder="@{@drawable/ic_launcher_background}"
+                    app:error="@{@drawable/ic_launcher_background}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_static_method"/>
+
+                <TextView
+                    android:id="@+id/tv_test"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    app:textContent="@{user.englishName}"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_test"/>
+
+                <!--转换器:自定义转换-->
+                <View
+                    android:background="@{@color/colorAccent}"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_test"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <data>
+
+        <!--  使用alias设置别名
+
+       <import type="com.example.databinding.field.User" alias="ExUser"/>
+       <import type="java.lang.String" alias="String"/>
+        <variable
+            name="title"
+            type="String" />
+        <variable
+            name="user"
+            type="ExUser" />
+        -->
+
+        <!-- data 标签内可以有多个import标签，可以在布局文件中像使用Java一样导入引用-->
+        <import type="com.example.databinding.util.StringUtil" />
+
+        <import type="android.view.View" />
+
+        <import type="android.text.TextUtils" />
+
+        <!-- 导入的类型也可以用于变量的类型引用和表达式中-->
+        <import type="java.util.List" />
+        <import type="android.graphics.drawable.Drawable" />
+        <import type="com.example.databinding.field.User" />
+
+        <variable
+            name="title"
+            type="java.lang.String" />
+
+        <!-- java.lang.* 包中的类会被自动导入，可以直接使用-->
+        <variable
+            name="result"
+            type="String" />
+
+        <variable
+            name="image"
+            type="Drawable" />
+
+        <variable
+            name="user"
+            type="com.example.databinding.field.User" />
+
+        <variable
+            name="userList"
+            type="com.example.databinding.field.User" />
+
+        <variable
+            name="main"
+            type="com.example.databinding.MainActivity" />
+
+        <variable
+            name="resource"
+            type="com.example.databinding.field.ResourceBean" />
+    </data>
+
+</layout>

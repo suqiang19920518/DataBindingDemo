@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <FrameLayout
+        android:id="@+id/main_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:background="@color/black">
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/vp_shutdown"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.example.databinding.widget.IndicatorView
+            android:id="@+id/idv_shutdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginBottom="18dp"
+            app:activeColor="@color/white"
+            app:activeRadius="3dp"
+            app:normalColor="@color/white"
+            app:normalRadius="2dp"
+            app:spaceSize="7dp" />
+    </FrameLayout>
+
+</layout>
